@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light only">
+<meta name="supported-color-schemes" content="light">
+<title>Wattgrün — Ökostrom zum ehrlichen Preis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme:light only;
+  --nacht:#03170F;
+  --tief:#06301F;
+  --gras:#1E8A4C;
+  --signal:#8BE04B;
+  --nebel:#EDF5EF;
+  --weiss:#FFFFFF;
+  --kohle:#12211A;
+  --rot:#C6362B;
+  --linie:rgba(6,48,31,.13);
+  --display:"Inter",system-ui,-apple-system,sans-serif;
+  --body:"Inter",system-ui,-apple-system,sans-serif;
+  --mono:"Inter",system-ui,-apple-system,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+.marke,.eyebrow,legend,.schritt .nr,.zaehler-kopf span,.einheit,.fuss-grid h4,.quittung,.stelle,input.zaehlerfeld,.zahl b{font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1}
+html{scroll-behavior:smooth;background:#FFFFFF}
+body{font-family:var(--body);color:var(--kohle);background:#FFFFFF;font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.wrap{width:min(1180px,100% - 4.5rem);margin-inline:auto;
+  padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right)}
+@media(max-width:900px){.wrap{width:min(1180px,100% - 3.6rem)}}
+@media(max-width:560px){.wrap{width:min(1180px,100% - 3.4rem)}}
+:focus-visible{outline:3px solid var(--signal);outline-offset:3px;border-radius:4px}
+
+/* ══ Kopfzeile ══ */
+header{position:fixed;top:0;left:0;right:0;z-index:80;transition:background .45s ease,border-color .45s ease;border-bottom:1px solid transparent}
+header.fest{background:rgba(255,255,255,.9);backdrop-filter:blur(16px) saturate(1.4);border-bottom-color:var(--linie)}
+.kopf{display:flex;align-items:center;justify-content:space-between;padding:1.05rem 0}
+.logo{display:flex;align-items:center;gap:.62rem;font-family:var(--display);font-weight:800;font-size:1.28rem;letter-spacing:-.03em;color:var(--weiss);text-decoration:none;transition:color .45s ease}
+header.fest .logo{color:var(--tief)}
+.logo .bolt{width:28px;height:28px;border-radius:8px;background:var(--signal);display:grid;place-items:center;color:var(--nacht);font-size:15px;box-shadow:0 0 22px rgba(139,224,75,.55);transition:box-shadow .45s ease,background .45s ease,color .45s ease}
+header.fest .logo .bolt{background:var(--tief);color:var(--signal);box-shadow:none}
+nav{display:flex;gap:1.7rem;align-items:center}
+nav a:not(.knopf){color:rgba(255,255,255,.72);text-decoration:none;font-size:.93rem;font-weight:500;transition:color .45s ease}
+nav a:not(.knopf):hover{color:var(--signal)}
+header.fest nav a:not(.knopf){color:rgba(6,48,31,.72)}
+header.fest nav a:not(.knopf):hover{color:var(--gras)}
+@media(max-width:840px){nav a:not(.knopf){display:none}}
+
+.knopf{position:relative;overflow:hidden;display:inline-block;background:var(--signal);color:var(--nacht);padding:.72rem 1.35rem;border-radius:999px;text-decoration:none;font-weight:600;font-size:.93rem;border:0;cursor:pointer;font-family:var(--body);transition:transform .2s cubic-bezier(.22,1,.36,1),box-shadow .3s ease}
+.knopf:hover{transform:translateY(-2px);box-shadow:0 10px 30px -8px rgba(139,224,75,.6)}
+.knopf::after{content:"";position:absolute;top:0;left:-120%;width:60%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.65),transparent);transform:skewX(-18deg)}
+.knopf:hover::after{animation:glanz .75s ease}
+@keyframes glanz{to{left:150%}}
+
+/* ══ Hero ══ */
+.held{position:relative;min-height:100svh;display:flex;align-items:center;padding:9rem 0 7rem;background:var(--nacht);isolation:isolate;overflow:hidden}
+#blitze{position:absolute;inset:0;width:100%;height:100%;z-index:-2}
+.held-grund{position:absolute;inset:0;z-index:-3;background:
+  radial-gradient(70rem 45rem at 78% 8%, rgba(30,138,76,.30), transparent 60%),
+  radial-gradient(50rem 40rem at 8% 88%, rgba(139,224,75,.10), transparent 62%),
+  linear-gradient(175deg,#042115,#03170F 62%)}
+.held-korn{position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:.5;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.34'/%3E%3C/svg%3E")}
+.held-schein{position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:0;transition:opacity .35s ease;background:radial-gradient(55rem 38rem at var(--mx,50%) var(--my,40%), rgba(139,224,75,.13), transparent 60%)}
+.held:hover .held-schein{opacity:1}
+
+.held-grid{display:grid;grid-template-columns:1.06fr .94fr;gap:4.5rem;align-items:center}
+.held-grid > *{min-width:0}
+.marke{font-family:var(--mono);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--signal);display:flex;align-items:center;gap:.7rem;margin-bottom:1.6rem}
+.marke::before{content:"";width:38px;height:1px;background:var(--signal);box-shadow:0 0 10px var(--signal)}
+h1{font-family:var(--display);font-weight:800;letter-spacing:-.032em;font-size:clamp(2.35rem,5.1vw,4.05rem);line-height:1.02;color:var(--weiss)}
+h1 em{font-style:normal;color:var(--signal);text-shadow:0 0 44px rgba(139,224,75,.5)}
+.zeile{display:block;overflow:hidden;padding-bottom:.06em}
+.zeile > span{display:block;transform:translateY(105%);animation:auf .95s cubic-bezier(.22,1,.36,1) forwards}
+.zeile:nth-of-type(2) > span{animation-delay:.11s}
+.zeile:nth-of-type(3) > span{animation-delay:.22s}
+@keyframes auf{to{transform:translateY(0)}}
+.spaet{opacity:0;animation:ein .9s ease forwards .55s}
+.spaet.b{animation-delay:.72s}
+.spaet.c{animation-delay:.88s}
+@keyframes ein{to{opacity:1}}
+
+.held p.lead{margin-top:1.5rem;font-size:1.12rem;max-width:45ch;color:rgba(255,255,255,.68)}
+.merkmale{list-style:none;margin-top:2.1rem;display:grid;gap:.8rem}
+.merkmale li{display:flex;gap:.8rem;align-items:flex-start;font-size:1rem;color:rgba(255,255,255,.82)}
+.haken{flex:0 0 21px;height:21px;margin-top:3px;border-radius:50%;background:rgba(139,224,75,.14);border:1px solid rgba(139,224,75,.45);color:var(--signal);display:grid;place-items:center;font-size:11px;font-weight:700}
+.held-cta{margin-top:2.6rem;display:flex;gap:1.2rem;align-items:center;flex-wrap:wrap}
+.held-cta .klein{font-size:.86rem;color:rgba(255,255,255,.5)}
+@media(max-width:920px){.held-grid{grid-template-columns:1fr;gap:3.2rem}.held{padding:7.5rem 0 5rem;min-height:auto}}
+
+/* ══ Signatur: Zählwerk ══ */
+.zaehler{position:relative;background:rgba(255,255,255,.045);border:1px solid rgba(139,224,75,.2);border-radius:24px;padding:2.1rem 2rem;color:var(--weiss);backdrop-filter:blur(18px);box-shadow:0 40px 80px -40px rgba(0,0,0,.85),inset 0 1px 0 rgba(255,255,255,.09)}
+.zaehler-kopf{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.35rem}
+.zaehler-kopf span{font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;opacity:.55}
+.plombe{width:9px;height:9px;border-radius:50%;background:var(--signal);animation:puls 2.4s ease-in-out infinite}
+@keyframes puls{0%,100%{box-shadow:0 0 0 0 rgba(139,224,75,.5)}50%{box-shadow:0 0 0 8px rgba(139,224,75,0)}}
+.zaehler-label{font-family:var(--display);font-size:1.4rem;font-weight:700;letter-spacing:-.02em;margin-bottom:1rem}
+.zaehlwerk{display:flex;gap:5px;background:rgba(0,0,0,.42);padding:12px;border-radius:13px;border:1px solid rgba(139,224,75,.14)}
+.stelle{position:relative;flex:1;aspect-ratio:.62/1;background:linear-gradient(180deg,#fbfbf6,#e6e6dd);color:#12211A;border-radius:5px;font-family:var(--mono);font-weight:700;font-size:clamp(1.4rem,3.4vw,2.1rem);overflow:hidden;box-shadow:inset 0 -6px 12px -6px rgba(0,0,0,.4),inset 0 6px 12px -6px rgba(0,0,0,.25)}
+.stelle.rot{background:linear-gradient(180deg,#d0402f,#a82b21);color:#fff}
+/* Walze: genau so hoch wie das Fenster, jede Ziffer füllt es ganz aus */
+.stelle .band{position:absolute;inset:0;display:flex;flex-direction:column;will-change:transform;transition:transform 2.1s cubic-bezier(.16,1,.3,1)}
+.stelle .band span{flex:0 0 100%;height:100%;display:grid;place-items:center;line-height:1;font-variant-numeric:tabular-nums}
+.stelle::after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;background:linear-gradient(180deg,rgba(0,0,0,.2),transparent 26%,transparent 74%,rgba(0,0,0,.2))}
+.einheit{display:flex;justify-content:space-between;margin-top:1rem;font-family:var(--mono);font-size:.7rem;opacity:.5;letter-spacing:.08em}
+.zaehler-fuss{margin-top:1.6rem;padding-top:1.35rem;border-top:1px solid rgba(255,255,255,.1);font-size:.9rem;color:rgba(255,255,255,.64)}
+.zaehler-fuss strong{color:var(--signal);font-weight:600}
+
+/* ══ Kennzahlen, überlappend ══ */
+.zahlen-huelle{position:relative;z-index:10;margin-top:-4.5rem}
+.zahlen{background:var(--weiss);border-radius:22px;padding:2.4rem 2.6rem;display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;box-shadow:0 40px 80px -46px rgba(3,23,15,.6);border:1px solid var(--linie)}
+.zahl{position:relative;padding-left:1.4rem}
+.zahl::before{content:"";position:absolute;left:0;top:.3rem;bottom:.3rem;width:2px;background:linear-gradient(180deg,var(--signal),var(--gras))}
+.zahl b{display:block;font-family:var(--display);font-size:clamp(1.6rem,2.6vw,2.05rem);font-weight:800;letter-spacing:-.028em;color:var(--tief)}
+.zahl span{font-size:.86rem;color:#5b7169}
+@media(max-width:800px){.zahlen{grid-template-columns:repeat(2,1fr);padding:2rem 1.9rem;gap:1.6rem}.zahlen-huelle{margin-top:-3rem}}
+
+/* ══ Abschnitte ══ */
+section.block{padding:7rem 0;background:#FFFFFF}
+.zahlen-huelle{background:transparent}
+h2{font-family:var(--display);font-weight:800;letter-spacing:-.028em;font-size:clamp(2rem,3.9vw,3rem);color:var(--tief);line-height:1.03}
+.block-kopf{max-width:54ch;margin-bottom:3.4rem}
+.block-kopf p{margin-top:1rem;color:#42574e;font-size:1.05rem}
+.eyebrow{font-family:var(--mono);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gras);margin-bottom:1rem;display:block}
+
+.schritte{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1.5px solid var(--tief)}
+.schritt{padding:2rem 2rem 1.8rem 0;border-right:1px solid var(--linie);position:relative}
+.schritt:last-child{border-right:0}
+.schritt::after{content:"";position:absolute;top:-1.5px;left:0;height:1.5px;width:0;background:var(--signal);box-shadow:0 0 12px var(--signal);transition:width .55s cubic-bezier(.22,1,.36,1)}
+.schritt:hover::after{width:100%}
+.schritt .nr{font-family:var(--mono);font-size:.78rem;color:var(--gras);font-weight:700;letter-spacing:.12em}
+.schritt h3{font-family:var(--display);font-size:1.25rem;font-weight:700;margin:.75rem 0 .55rem;color:var(--tief);letter-spacing:-.025em}
+.schritt p{font-size:.96rem;color:#42574e}
+@media(max-width:800px){.schritte{grid-template-columns:1fr}.schritt{border-right:0;border-bottom:1px solid var(--linie);padding-right:0}}
+@media(max-width:560px){section.block{padding:5rem 0}.formular{padding:5rem 0}}
+
+/* ══ Formular ══ */
+.formular{background:var(--nebel);padding:6.5rem 0;position:relative;overflow:hidden}
+.formular::before{content:"";position:absolute;top:-14rem;right:-10rem;width:44rem;height:44rem;border-radius:50%;background:radial-gradient(circle,rgba(139,224,75,.2),transparent 66%);pointer-events:none}
+.form-grid{display:grid;grid-template-columns:.82fr 1.18fr;gap:3.8rem;align-items:start;position:relative}
+.form-text p{color:#42574e}
+.hinweis{margin-top:1.7rem;background:var(--weiss);border:1px solid var(--linie);border-left:3px solid var(--gras);border-radius:0 14px 14px 0;padding:1.15rem 1.3rem;font-size:.92rem;color:#42574e}
+.hinweis b{display:block;font-family:var(--display);color:var(--tief);margin-bottom:.35rem;font-size:1rem}
+.karte{background:var(--weiss);border-radius:24px;padding:2.4rem;border:1px solid var(--linie);box-shadow:0 40px 80px -50px rgba(3,23,15,.55)}
+fieldset{border:0;margin-bottom:1.9rem}
+legend{font-family:var(--mono);font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gras);margin-bottom:1.1rem;display:flex;align-items:center;gap:.6rem;width:100%}
+legend::after{content:"";flex:1;height:1px;background:var(--linie)}
+.reihe{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.feld{margin-bottom:1.05rem}
+label{display:block;font-size:.88rem;font-weight:600;color:var(--tief);margin-bottom:.42rem}
+label .opt{font-weight:400;color:#7a8f86}
+input,select{width:100%;padding:.85rem .98rem;border:1.5px solid var(--linie);border-radius:11px;font-family:var(--body);font-size:1rem;background:var(--weiss);color:var(--kohle);transition:border-color .18s ease,box-shadow .18s ease}
+input:focus,select:focus{outline:none;border-color:var(--gras);box-shadow:0 0 0 4px rgba(30,138,76,.13)}
+input.zaehlerfeld{font-family:var(--mono);font-weight:700;letter-spacing:.18em;font-size:1.05rem;background:linear-gradient(180deg,#fbfbf6,#f2f2e9);border-color:var(--tief);text-transform:uppercase}
+input.zaehlerfeld:focus{box-shadow:0 0 0 4px rgba(139,224,75,.32)}
+.hilfe{font-size:.79rem;color:#6c8279;margin-top:.35rem}
+.fehler{display:none;font-size:.82rem;color:var(--rot);margin-top:.35rem;font-weight:500}
+.feld.ungueltig input,.feld.ungueltig select{border-color:var(--rot)}
+.feld.ungueltig .fehler{display:block}
+.zustimmung{display:flex;gap:.78rem;align-items:flex-start;font-size:.86rem;color:#42574e;line-height:1.5;font-weight:400}
+.zustimmung input{width:19px;height:19px;flex:0 0 19px;margin-top:2px;accent-color:var(--gras)}
+.zustimmung a{color:var(--gras)}
+button.senden{position:relative;overflow:hidden;width:100%;margin-top:1.6rem;padding:1.1rem;border:0;border-radius:13px;background:var(--tief);color:var(--signal);font-family:var(--display);font-weight:700;font-size:1.08rem;cursor:pointer;letter-spacing:-.015em;transition:transform .2s cubic-bezier(.22,1,.36,1),box-shadow .3s ease}
+button.senden:hover{transform:translateY(-2px);box-shadow:0 16px 36px -14px rgba(6,48,31,.7)}
+button.senden::after{content:"";position:absolute;top:0;left:-120%;width:45%;height:100%;background:linear-gradient(100deg,transparent,rgba(139,224,75,.35),transparent);transform:skewX(-18deg)}
+button.senden:hover::after{animation:glanz .8s ease}
+.dsgvo{text-align:center;font-size:.78rem;color:#6c8279;margin-top:.95rem}
+@media(max-width:920px){.form-grid{grid-template-columns:1fr;gap:2.4rem}.reihe{grid-template-columns:1fr}.karte{padding:1.9rem 1.7rem}}
+
+.erfolg{display:none;text-align:center;padding:2.6rem 1rem}
+.erfolg.an{display:block;animation:ein .5s ease forwards}
+.erfolg .siegel{width:66px;height:66px;border-radius:50%;background:var(--tief);color:var(--signal);display:grid;place-items:center;font-size:30px;margin:0 auto 1.5rem;animation:puls 2.4s ease-in-out infinite}
+.erfolg h3{font-family:var(--display);font-size:1.75rem;color:var(--tief);letter-spacing:-.03em;margin-bottom:.85rem}
+.erfolg p{color:#42574e;max-width:40ch;margin:0 auto 1.5rem}
+.quittung{display:inline-block;font-family:var(--mono);font-size:.85rem;background:var(--nebel);border:1px dashed var(--gras);border-radius:9px;padding:.62rem 1.05rem;color:var(--tief)}
+
+/* ══ Fuß ══ */
+footer{background:var(--nacht);color:var(--weiss);padding:4rem 0 2rem}
+footer .logo{color:var(--weiss)}
+.fuss-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:2.6rem;padding-bottom:2.6rem;border-bottom:1px solid rgba(255,255,255,.1)}
+.fuss-grid h4{font-family:var(--mono);font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;opacity:.5;margin-bottom:1rem;font-weight:500}
+.fuss-grid a:not(.logo){display:block;color:var(--weiss);text-decoration:none;opacity:.72;font-size:.94rem;margin-bottom:.55rem;transition:opacity .2s ease,color .2s ease}
+.fuss-grid a:not(.logo):hover{opacity:1;color:var(--signal)}
+.fuss-grid p{font-size:.94rem;opacity:.6;margin-top:1rem;max-width:34ch}
+.fuss-unten{padding-top:1.6rem;display:flex;justify-content:space-between;font-size:.82rem;opacity:.5;flex-wrap:wrap;gap:.6rem}
+@media(max-width:800px){.fuss-grid{grid-template-columns:1fr}}
+
+/* ══ Inhaber ══ */
+.inhaber-block{background:var(--nebel)}
+.inhaber-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:4rem;align-items:center}
+.inhaber-bilder{position:relative}
+.inhaber-bild{position:relative;border-radius:26px;overflow:hidden;background:
+  radial-gradient(28rem 22rem at 50% 0%, rgba(30,138,76,.55), transparent 65%),
+  linear-gradient(170deg,#0a3d27,#03170F);box-shadow:0 40px 80px -46px rgba(3,23,15,.75)}
+.inhaber-bild img{display:block;width:100%;height:auto;margin-bottom:-4px}
+.inhaber-bild::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,transparent 62%,rgba(3,23,15,.5))}
+.buero{position:absolute;right:-1.4rem;bottom:-1.4rem;width:41%;border-radius:18px;overflow:hidden;border:5px solid var(--nebel);box-shadow:0 24px 50px -24px rgba(3,23,15,.6)}
+.buero img{display:block;width:100%;height:auto;aspect-ratio:1/1;object-fit:cover}
+.inhaber-text h2{margin-top:.2rem}
+.inhaber-text p{margin-top:1.15rem;color:#42574e;font-size:1.05rem;max-width:52ch}
+.belege{list-style:none;margin-top:2rem;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.2rem}
+.beleg b{display:block;font-family:var(--display);font-size:1.5rem;font-weight:800;letter-spacing:-.028em;color:var(--tief)}
+.beleg span{font-size:.86rem;color:#5b7169}
+.inhaber-kontakt{margin-top:2.2rem;display:flex;gap:1.6rem;flex-wrap:wrap;font-size:.94rem}
+.inhaber-kontakt a{color:var(--gras);text-decoration:none;font-weight:600;border-bottom:1px solid rgba(30,138,76,.3);padding-bottom:2px}
+.inhaber-kontakt a:hover{border-bottom-color:var(--gras)}
+@media(max-width:920px){.inhaber-grid{grid-template-columns:1fr;gap:3rem}.inhaber-bilder{max-width:420px}.buero{width:36%;right:-.6rem;bottom:-.9rem}}
+@media(max-width:560px){.belege{grid-template-columns:1fr 1fr;gap:1rem}.buero{display:none}}
+
+/* ══ Fenster: Impressum / Datenschutz ══ */
+.modal[hidden]{display:none}
+.modal{position:fixed;inset:0;z-index:200;display:grid;place-items:center;padding:clamp(.9rem,4vw,2.5rem)}
+.modal-hg{position:absolute;inset:0;background:rgba(3,23,15,.66);backdrop-filter:blur(7px);animation:ein .28s ease forwards;opacity:0}
+.modal-box{position:relative;display:flex;flex-direction:column;width:min(720px,100%);max-height:min(86vh,860px);background:var(--weiss);border-radius:24px;overflow:hidden;box-shadow:0 60px 110px -40px rgba(3,23,15,.7);opacity:0;animation:hoch .4s cubic-bezier(.22,1,.36,1) forwards}
+@keyframes hoch{to{opacity:1;transform:none}}
+.modal-box{transform:translateY(18px)}
+.modal-kopf{display:flex;align-items:flex-start;justify-content:space-between;gap:1.4rem;padding:clamp(1.7rem,4vw,2.4rem) clamp(1.7rem,4vw,2.6rem) 1.2rem;border-bottom:1px solid var(--linie)}
+.modal-kopf h2{font-size:clamp(1.5rem,3.4vw,2rem)}
+.modal-kopf .eyebrow{margin-bottom:.5rem}
+.modal-zu{flex:0 0 40px;width:40px;height:40px;border:1px solid var(--linie);border-radius:50%;background:var(--weiss);color:var(--tief);font-size:15px;cursor:pointer;display:grid;place-items:center;transition:background .2s ease,color .2s ease,transform .2s ease;font-family:var(--body)}
+.modal-zu:hover{background:var(--tief);color:var(--signal);transform:rotate(90deg)}
+.rechtstext{overflow-y:auto;-webkit-overflow-scrolling:touch;padding:1.7rem clamp(1.7rem,4vw,2.6rem) clamp(2rem,4vw,2.6rem);font-size:.96rem;color:#42574e;line-height:1.62}
+.rechtstext h3{font-family:var(--display);font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gras);font-weight:700;margin:2rem 0 .6rem}
+.rechtstext h3:first-child{margin-top:0}
+.rechtstext p{margin-bottom:.9rem}
+.rechtstext p:last-child{margin-bottom:0}
+.rechtstext strong{color:var(--tief);font-weight:600}
+.rechtstext address{font-style:normal;color:var(--tief);font-weight:500}
+.rechtstext a{color:var(--gras)}
+.rechtstext .stand{margin-top:2rem;padding-top:1rem;border-top:1px solid var(--linie);font-size:.82rem;color:#6c8279}
+
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .8s cubic-bezier(.22,1,.36,1),transform .8s cubic-bezier(.22,1,.36,1)}
+.reveal.da{opacity:1;transform:none}
+/* Notbremse gegen erzwungenen Dark Mode in App-Browsern */
+@media(prefers-color-scheme:dark){
+  html,body{background:#FFFFFF!important;color:var(--kohle)!important}
+  section.block{background:#FFFFFF!important}
+  .formular{background:var(--nebel)!important}
+  .zahlen,.karte,.hinweis{background:#FFFFFF!important}
+  h2,.schritt h3,.zahl b,label,.erfolg h3,.hinweis b{color:var(--tief)!important}
+  .block-kopf p,.schritt p,.form-text p,.hinweis,.erfolg p{color:#42574e!important}
+  .zahl span{color:#5b7169!important}
+  .eyebrow,legend,.schritt .nr{color:var(--gras)!important}
+  input,select{background:#FFFFFF!important;color:var(--kohle)!important;-webkit-text-fill-color:var(--kohle)}
+  input.zaehlerfeld{background:#F7F7F2!important}
+  .quittung{background:var(--nebel)!important;color:var(--tief)!important}
+  .held,.held-grund{background-color:var(--nacht)!important}
+  .inhaber-block{background:var(--nebel)!important}
+  .inhaber-text p,.rechtstext{color:#42574e!important}
+  .beleg b,.rechtstext strong,.rechtstext address,.modal-zu{color:var(--tief)!important}
+  .beleg span,.rechtstext .stand{color:#5b7169!important}
+  .modal-box,.modal-zu{background:#FFFFFF!important}
+  footer{background:var(--nacht)!important;color:#FFFFFF!important}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition:none!important;animation:none!important}
+  .reveal{opacity:1;transform:none}
+  .zeile > span{transform:none}
+  .spaet{opacity:1}
+  .modal-hg{opacity:1}
+  .modal-box{opacity:1;transform:none}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+
+<header id="kopfleiste">
+  <div class="wrap kopf">
+    <a href="#" class="logo"><span class="bolt">⚡</span>Wattgrün</a>
+    <nav>
+      <a href="#ablauf">So läuft der Wechsel</a>
+      <a href="#inhaber">Über uns</a>
+      <a href="#angebot">Preis</a>
+      <a href="#angebot" class="knopf">Angebot anfordern</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ══ HERO ══ -->
+<section class="held" id="held">
+  <div class="held-grund"></div>
+  <canvas id="blitze" aria-hidden="true"></canvas>
+  <div class="held-korn"></div>
+  <div class="held-schein" id="schein"></div>
+
+  <div class="wrap held-grid">
+    <div>
+      <div class="marke spaet">100 % Ökostrom aus Deutschland</div>
+      <h1>
+        <span class="zeile"><span>Ihr Zähler läuft.</span></span>
+        <span class="zeile"><span>Die Frage ist nur,</span></span>
+        <span class="zeile"><span><em>zu welchem Preis</em>.</span></span>
+      </h1>
+      <p class="lead spaet">Sagen Sie uns Ihre Zählernummer und Ihren Verbrauch — wir rechnen Ihren Haushalt durch und melden uns mit einem festen Preis. Keine Bonusfallen, keine Bindung über die Preisgarantie hinaus.</p>
+      <ul class="merkmale spaet b">
+        <li><span class="haken">✓</span><span>Preisgarantie für 24 Monate, schriftlich im Angebot</span></li>
+        <li><span class="haken">✓</span><span>Wir kündigen bei Ihrem alten Anbieter — Sie unterschreiben einmal</span></li>
+        <li><span class="haken">✓</span><span>Kein Strom fließt jemals ab: Der Netzbetreiber bleibt derselbe</span></li>
+      </ul>
+      <div class="held-cta spaet c">
+        <a href="#angebot" class="knopf">Angebot anfordern</a>
+        <span class="klein">Antwort in der Regel binnen 24 Stunden</span>
+      </div>
+    </div>
+
+    <div class="zaehler spaet b" aria-hidden="true">
+      <div class="zaehler-kopf"><span>Zählwerk · Beispielhaushalt</span><span class="plombe"></span></div>
+      <div class="zaehler-label">Ersparnis im ersten Jahr</div>
+      <div class="zaehlwerk" id="zaehlwerk"></div>
+      <div class="einheit"><span>EUR/Jahr</span><span>3 Pers. · 3.200 kWh</span></div>
+      <div class="zaehler-fuss">Berechnet gegen den örtlichen Grundversorgertarif. Ihr eigener Wert hängt von Verbrauch und Postleitzahl ab — <strong>wir rechnen ihn Ihnen aus</strong>.</div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap zahlen-huelle">
+  <div class="zahlen">
+    <div class="zahl"><b>28,4 ct</b><span>pro kWh, Arbeitspreis brutto</span></div>
+    <div class="zahl"><b>8,90 €</b><span>Grundpreis im Monat</span></div>
+    <div class="zahl"><b>24 Mon.</b><span>Preisgarantie</span></div>
+    <div class="zahl"><b>0 €</b><span>Kosten für den Wechsel</span></div>
+  </div>
+</div>
+
+<!-- ══ ABLAUF ══ -->
+<section class="block" id="ablauf">
+  <div class="wrap">
+    <div class="block-kopf reveal">
+      <span class="eyebrow">Der Ablauf</span>
+      <h2>Drei Schritte, dann läuft es.</h2>
+      <p>Der Wechsel ist ein Verwaltungsvorgang, kein Bauprojekt. Wir übernehmen den Papierkram, Sie behalten Ihre Steckdose.</p>
+    </div>
+    <div class="schritte reveal">
+      <div class="schritt">
+        <div class="nr">01</div>
+        <h3>Daten hinterlassen</h3>
+        <p>Zählernummer, Postleitzahl, ungefährer Jahresverbrauch. Die Zählernummer steht auf Ihrem Zähler und auf jeder Jahresabrechnung.</p>
+      </div>
+      <div class="schritt">
+        <div class="nr">02</div>
+        <h3>Angebot prüfen</h3>
+        <p>Sie bekommen eine Rechnung mit konkreten Zahlen für Ihren Haushalt — nicht für einen Musterkunden. Wenn es sich nicht lohnt, schreiben wir Ihnen das.</p>
+      </div>
+      <div class="schritt">
+        <div class="nr">03</div>
+        <h3>Wechsel läuft an</h3>
+        <p>Nach Ihrer Zusage kündigen wir beim alten Anbieter und melden Sie beim Netzbetreiber an. Der Wechsel dauert je nach Kündigungsfrist zwei bis sechs Wochen.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ INHABER ══ -->
+<section class="block inhaber-block" id="inhaber">
+  <div class="wrap inhaber-grid">
+    <div class="inhaber-bilder reveal">
+      <div class="inhaber-bild">
+        <img src="bilder/inhaber.webp" width="900" height="1017" loading="lazy" decoding="async"
+             alt="Ramin Deldarbig, Inhaber">
+      </div>
+      <div class="buero">
+        <img src="bilder/buero.webp" width="1100" height="1466" loading="lazy" decoding="async"
+             alt="Büro in Mönchengladbach">
+      </div>
+    </div>
+
+    <div class="inhaber-text reveal">
+      <span class="eyebrow">Der Inhaber</span>
+      <h2>Ich bin Ramin Deldarbig — Ihr Partner, wenn es um Energie geht.</h2>
+      <p>Ich habe es mir zur Aufgabe gemacht, Menschen und Unternehmen dabei zu unterstützen, ihre Energiekosten zu senken und gleichzeitig optimal abgesichert zu sein.</p>
+      <p>Durch meine Erfahrung im Vertrieb erkenne ich Potenziale, berate auf Augenhöhe und begleite jeden Haushalt persönlich — vom ersten Angebot bis zur ersten Abrechnung beim neuen Tarif.</p>
+      <ul class="belege">
+        <li class="beleg"><b>10+</b><span>Jahre Erfahrung in der Energiebranche</span></li>
+        <li class="beleg"><b>500+</b><span>zufriedene Kundinnen und Kunden</span></li>
+        <li class="beleg"><b>98 %</b><span>bewerten die Beratung mit „sehr gut“</span></li>
+      </ul>
+      <div class="inhaber-kontakt">
+        <a href="tel:+4915110686258">+49 151 10686258</a>
+        <a href="mailto:info@allinone-consulting.de">info@allinone-consulting.de</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FORMULAR ══ -->
+<section class="formular" id="angebot">
+  <div class="wrap form-grid">
+    <div class="form-text reveal">
+      <span class="eyebrow">Unverbindlich</span>
+      <h2>Angebot anfordern</h2>
+      <p>Ausfüllen dauert etwa eine Minute. Es entsteht kein Vertrag und keine Verpflichtung — Sie erhalten zunächst nur eine Berechnung.</p>
+      <div class="hinweis">
+        <b>Wo steht die Zählernummer?</b>
+        Auf dem Typenschild Ihres Stromzählers, meist unter dem Strichcode, und oben auf Ihrer letzten Jahresabrechnung. Sie ist 8 bis 14 Zeichen lang. Nicht zu verwechseln mit dem Zählerstand.
+      </div>
+      <div class="hinweis">
+        <b>Was wir nicht brauchen</b>
+        Keine Bankverbindung, keine Ausweisnummer, kein Passwort Ihres alten Anbieters. Fragt Sie jemand danach, ist es nicht Wattgrün.
+      </div>
+    </div>
+
+    <div class="karte reveal">
+      <form id="anfrage" novalidate>
+        <fieldset>
+          <legend>Ihr Anschluss</legend>
+          <div class="feld" id="f-zaehler">
+            <label for="zaehlernummer">Zählernummer</label>
+            <input class="zaehlerfeld" type="text" id="zaehlernummer" name="zaehlernummer" placeholder="1ESY1161234567" autocomplete="off" spellcheck="false" required>
+            <div class="hilfe">8–14 Zeichen, Buchstaben und Ziffern</div>
+            <div class="fehler">Bitte die Zählernummer eintragen — 8 bis 14 Buchstaben oder Ziffern.</div>
+          </div>
+          <div class="reihe">
+            <div class="feld" id="f-plz">
+              <label for="plz">Postleitzahl</label>
+              <input type="text" id="plz" name="plz" inputmode="numeric" placeholder="10115" maxlength="5" autocomplete="postal-code" required>
+              <div class="fehler">Bitte fünf Ziffern eintragen.</div>
+            </div>
+            <div class="feld" id="f-verbrauch">
+              <label for="verbrauch">Jahresverbrauch <span class="opt">in kWh</span></label>
+              <input type="number" id="verbrauch" name="verbrauch" placeholder="3200" min="300" max="50000" required>
+              <div class="fehler">Bitte einen Wert zwischen 300 und 50.000 eintragen.</div>
+            </div>
+          </div>
+          <div class="feld">
+            <label for="haushalt">Haushaltsgröße <span class="opt">— hilft beim Schätzen</span></label>
+            <select id="haushalt" name="haushalt">
+              <option value="">Bitte wählen</option>
+              <option>1 Person</option><option>2 Personen</option><option>3 Personen</option>
+              <option>4 Personen</option><option>5 Personen oder mehr</option>
+            </select>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Ihre Kontaktdaten</legend>
+          <div class="reihe">
+            <div class="feld" id="f-vorname">
+              <label for="vorname">Vorname</label>
+              <input type="text" id="vorname" name="vorname" autocomplete="given-name" required>
+              <div class="fehler">Bitte ausfüllen.</div>
+            </div>
+            <div class="feld" id="f-nachname">
+              <label for="nachname">Nachname</label>
+              <input type="text" id="nachname" name="nachname" autocomplete="family-name" required>
+              <div class="fehler">Bitte ausfüllen.</div>
+            </div>
+          </div>
+          <div class="feld" id="f-mail">
+            <label for="mail">E-Mail</label>
+            <input type="email" id="mail" name="mail" placeholder="name@beispiel.de" autocomplete="email" required>
+            <div class="fehler">Bitte eine gültige E-Mail-Adresse eintragen.</div>
+          </div>
+          <div class="feld">
+            <label for="telefon">Telefon <span class="opt">— optional, für Rückfragen</span></label>
+            <input type="tel" id="telefon" name="telefon" placeholder="0170 1234567" autocomplete="tel">
+          </div>
+        </fieldset>
+
+        <div class="feld" id="f-ok">
+          <label class="zustimmung" for="einwilligung">
+            <input type="checkbox" id="einwilligung" name="einwilligung" required>
+            <span>Wattgrün darf meine Daten verarbeiten, um mir ein Angebot zu erstellen, und mich dazu per E-Mail oder Telefon kontaktieren. Ich kann das jederzeit widerrufen. <a href="#" data-modal="datenschutz">Datenschutzerklärung</a></span>
+          </label>
+          <div class="fehler">Ohne Einwilligung dürfen wir Ihnen kein Angebot schicken.</div>
+        </div>
+
+        <button type="submit" class="senden">Angebot anfordern</button>
+        <p class="dsgvo">Übertragung verschlüsselt · Keine Weitergabe an Dritte · Kein Vertragsabschluss</p>
+      </form>
+
+      <div class="erfolg" id="erfolg">
+        <div class="siegel">✓</div>
+        <h3>Angefordert.</h3>
+        <p>Wir rechnen Ihren Haushalt durch und schicken das Angebot an <b id="ziel-mail"></b>. In der Regel binnen 24 Stunden.</p>
+        <div class="quittung">Vorgang <span id="vorgang"></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="fuss-grid">
+      <div>
+        <a href="#" class="logo"><span class="bolt">⚡</span>Wattgrün</a>
+        <p>Ökostrom aus deutschen Wasser- und Windkraftanlagen. Beliefert Haushalte in ganz Deutschland.</p>
+      </div>
+      <div>
+        <h4>Tarif</h4>
+        <a href="#angebot">Preise und Konditionen</a>
+        <a href="#ablauf">So läuft der Wechsel</a>
+        <a href="#angebot">Angebot anfordern</a>
+      </div>
+      <div>
+        <h4>Rechtliches</h4>
+        <a href="#" data-modal="impressum">Impressum</a>
+        <a href="#" data-modal="datenschutz">Datenschutzerklärung</a>
+        <a href="#">AGB</a>
+        <a href="#">Widerrufsbelehrung</a>
+      </div>
+    </div>
+    <div class="fuss-unten">
+      <span>© 2026 Wattgrün GmbH</span>
+      <span>Kundenservice 030 1234 5678 · Mo–Fr 8–18 Uhr</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ══ IMPRESSUM ══ -->
+<div class="modal" id="modal-impressum" hidden>
+  <div class="modal-hg" data-schliessen></div>
+  <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="titel-impressum">
+    <div class="modal-kopf">
+      <div>
+        <span class="eyebrow">Rechtliches</span>
+        <h2 id="titel-impressum">Impressum</h2>
+      </div>
+      <button type="button" class="modal-zu" data-schliessen aria-label="Fenster schließen">✕</button>
+    </div>
+    <div class="rechtstext">
+      <h3>Erklärungen gemäß § 5</h3>
+      <address>
+        ALL In One Consulting<br>
+        Ramin Deldarbig<br>
+        Hauptstr. 121<br>
+        41236 Mönchengladbach
+      </address>
+      <p style="margin-top:.9rem">Steuernummer: folgt</p>
+
+      <h3>Kontakt</h3>
+      <p>
+        E-Mail: <a href="mailto:info@allinone-consulting.de">info@allinone-consulting.de</a><br>
+        Telefon: <a href="tel:+4915110686258">+49 151 10686258</a>
+      </p>
+
+      <h3>Verantwortlich für die folgenden Inhalte gemäß § 55 Abs. 2 RStV</h3>
+      <p>Ramin Deldarbig, Anschrift wie oben.</p>
+
+      <p class="stand">Sie suchen die Datenschutzerklärung?
+        <a href="#" data-modal="datenschutz">Hier entlang</a>.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ DATENSCHUTZ ══ -->
+<div class="modal" id="modal-datenschutz" hidden>
+  <div class="modal-hg" data-schliessen></div>
+  <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="titel-datenschutz">
+    <div class="modal-kopf">
+      <div>
+        <span class="eyebrow">Rechtliches</span>
+        <h2 id="titel-datenschutz">Datenschutzrichtlinie</h2>
+      </div>
+      <button type="button" class="modal-zu" data-schliessen aria-label="Fenster schließen">✕</button>
+    </div>
+    <div class="rechtstext">
+      <p>Diese Datenschutzrichtlinie beschreibt, wie Ihre persönlichen Daten gesammelt, verwendet und weitergegeben werden, wenn Sie diese Website besuchen oder Leistungen von <strong>All in One Consulting</strong> („Unternehmen“, „wir“, „uns“ oder „unser“) in Anspruch nehmen.</p>
+
+      <h3>Persönliche Informationen, die wir sammeln</h3>
+      <p>Wenn Sie unsere Website besuchen, sammeln wir automatisch bestimmte Informationen über Ihr Gerät, einschließlich Informationen über Ihren Webbrowser, Ihre IP-Adresse, Ihre Zeitzone und einige der Cookies, die auf Ihrem Gerät installiert sind. Wenn Sie auf unserer Website surfen, sammeln wir außerdem Informationen über die einzelnen Webseiten oder Produkte, die Sie sich ansehen, welche Websites oder Suchbegriffe Sie auf unsere Website verwiesen haben, und Informationen darüber, wie Sie mit unserer Website interagieren.</p>
+
+      <h3>Wie verwenden wir Ihre persönlichen Daten?</h3>
+      <p>Wir verwenden die von Ihnen gesammelten persönlichen Daten, um die von Ihnen angeforderten Produkte oder Dienstleistungen bereitzustellen, um mit Ihnen zu kommunizieren, um Ihnen Informationen oder Angebote über Produkte und Dienstleistungen zukommen zu lassen, die für Sie von Interesse sein könnten, und um unsere Website und Dienstleistungen zu verwalten.</p>
+
+      <h3>Weitergabe Ihrer persönlichen Informationen</h3>
+      <p>Wir werden Ihre persönlichen Daten nicht verkaufen, tauschen oder anderweitig an Dritte weitergeben, es sei denn, wir informieren Sie im Voraus darüber.</p>
+
+      <h3>Datensicherheit</h3>
+      <p>Wir haben Maßnahmen ergriffen, um Ihre persönlichen Daten vor versehentlichem Verlust und vor unbefugtem Zugriff, Verwendung, Änderung und Weitergabe zu schützen.</p>
+
+      <h3>Ihre Rechte</h3>
+      <p>Sie haben das Recht, auf die von uns gespeicherten personenbezogenen Daten zuzugreifen und zu verlangen, dass Ihre personenbezogenen Daten korrigiert, aktualisiert oder gelöscht werden.</p>
+
+      <h3>Änderungen</h3>
+      <p>Wir können diese Datenschutzrichtlinie von Zeit zu Zeit aktualisieren, um z. B. Änderungen unserer Praktiken oder andere betriebliche, rechtliche oder regulatorische Gründe zu berücksichtigen.</p>
+
+      <h3>Kontaktieren Sie uns</h3>
+      <p>Wenn Sie weitere Informationen über unsere Datenschutzpraktiken erhalten möchten, Fragen haben oder sich beschweren möchten, wenden Sie sich bitte per E-Mail an <a href="mailto:info@allinone-consulting.de">info@allinone-consulting.de</a> oder per Post an die unten angegebenen Kontaktdaten:</p>
+      <address>
+        All in One Consulting<br>
+        Hauptstr. 121<br>
+        41236 Mönchengladbach
+      </address>
+
+      <p class="stand">Sie suchen das Impressum?
+        <a href="#" data-modal="impressum">Hier entlang</a>.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+const sanft = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* ════════ Blitz-Canvas ════════ */
+(function(){
+  const cv = document.getElementById("blitze");
+  const held = document.getElementById("held");
+  if(!cv || sanft) return;
+  const ctx = cv.getContext("2d");
+  let B = 0, H = 0, dpr = 1, sichtbar = true;
+
+  /* — Grundton: Leitungen mit wandernden Lichtimpulsen — */
+  let leitungen = [];
+  function leitungenBauen(){
+    leitungen = [];
+    const anzahl = B < 700 ? 3 : 5;
+    for(let i=0;i<anzahl;i++){
+      leitungen.push({
+        y: H * (0.14 + 0.17*i) + (Math.random()-.5)*40,
+        amp: 22 + Math.random()*46,
+        wellen: 1.1 + Math.random()*1.4,
+        tempo: 0.00014 + Math.random()*0.0002,
+        phase: Math.random()*Math.PI*2,
+        impuls: Math.random(),
+        impulsTempo: 0.0010 + Math.random()*0.0016,
+        breite: .09 + Math.random()*.07
+      });
+    }
+  }
+
+  function messen(){
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    B = held.offsetWidth; H = held.offsetHeight;
+    cv.width = B * dpr; cv.height = H * dpr;
+    cv.style.width = B + "px"; cv.style.height = H + "px";
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    leitungenBauen();
+  }
+
+  function leitungPunkt(l, t, x){
+    const p = x / B * Math.PI * 2 * l.wellen + l.phase + t * l.tempo;
+    return l.y + Math.sin(p) * l.amp + Math.sin(p*2.3) * l.amp * .28;
+  }
+
+  function leitungenZeichnen(t, dt){
+    leitungen.forEach(l=>{
+      ctx.beginPath();
+      for(let x=0; x<=B; x+=9){
+        const y = leitungPunkt(l,t,x);
+        x === 0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+      }
+      ctx.strokeStyle = "rgba(139,224,75,.085)";
+      ctx.lineWidth = 1;
+      ctx.stroke();
+
+      l.impuls += l.impulsTempo * (dt/16.7);
+      if(l.impuls > 1 + l.breite) l.impuls = -l.breite;
+      const von = (l.impuls - l.breite) * B, bis = (l.impuls + l.breite) * B;
+      ctx.beginPath();
+      let erst = true;
+      for(let x=Math.max(0,von); x<=Math.min(B,bis); x+=5){
+        const y = leitungPunkt(l,t,x);
+        erst ? (ctx.moveTo(x,y), erst=false) : ctx.lineTo(x,y);
+      }
+      const g = ctx.createLinearGradient(von,0,bis,0);
+      g.addColorStop(0,"rgba(139,224,75,0)");
+      g.addColorStop(.5,"rgba(190,255,140,.5)");
+      g.addColorStop(1,"rgba(139,224,75,0)");
+      ctx.strokeStyle = g; ctx.lineWidth = 1.6;
+      ctx.shadowColor = "rgba(139,224,75,.85)"; ctx.shadowBlur = 12;
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+    });
+  }
+
+  /* — Blitze per Mittelpunktverschiebung — */
+  function pfad(x1,y1,x2,y2,streuung){
+    const punkte = [[x1,y1]];
+    (function teile(ax,ay,bx,by,d){
+      if(d < 3){ punkte.push([bx,by]); return; }
+      const dx = bx-ax, dy = by-ay, len = Math.hypot(dx,dy) || 1;
+      const nx = -dy/len, ny = dx/len;
+      const o = (Math.random()-.5) * d;
+      const mx = (ax+bx)/2 + nx*o, my = (ay+by)/2 + ny*o;
+      teile(ax,ay,mx,my,d/2); teile(mx,my,bx,by,d/2);
+    })(x1,y1,x2,y2,streuung);
+    return punkte;
+  }
+
+  let blitze = [];
+  function blitzErzeugen(){
+    const vonOben = Math.random() > .35;
+    let x1,y1,x2,y2;
+    if(vonOben){
+      x1 = B * (.2 + Math.random()*.75); y1 = -40;
+      x2 = x1 + (Math.random()-.5) * B * .35; y2 = H * (.45 + Math.random()*.5);
+    }else{
+      x1 = -40; y1 = H * (.1 + Math.random()*.5);
+      x2 = B * (.45 + Math.random()*.6); y2 = y1 + (Math.random()-.5) * H * .5;
+    }
+    const haupt = pfad(x1,y1,x2,y2, Math.min(B,H) * .17);
+    const aeste = [];
+    const wieViele = 1 + Math.floor(Math.random()*3);
+    for(let i=0;i<wieViele;i++){
+      const k = haupt[Math.floor(haupt.length * (.25 + Math.random()*.55))];
+      if(!k) continue;
+      const laenge = 70 + Math.random()*170;
+      const winkel = Math.atan2(y2-y1, x2-x1) + (Math.random()-.5)*1.7;
+      aeste.push(pfad(k[0],k[1], k[0]+Math.cos(winkel)*laenge, k[1]+Math.sin(winkel)*laenge, laenge*.42));
+    }
+    blitze.push({haupt, aeste, alter:0, dauer: 620 + Math.random()*380, staerke: .55 + Math.random()*.45});
+  }
+
+  function linie(pkte, w, farbe, blur){
+    ctx.beginPath();
+    ctx.moveTo(pkte[0][0], pkte[0][1]);
+    for(let i=1;i<pkte.length;i++) ctx.lineTo(pkte[i][0], pkte[i][1]);
+    ctx.strokeStyle = farbe; ctx.lineWidth = w;
+    ctx.lineCap = "round"; ctx.lineJoin = "round";
+    ctx.shadowColor = "rgba(139,224,75,.9)"; ctx.shadowBlur = blur;
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+  }
+
+  function blitzeZeichnen(dt){
+    blitze = blitze.filter(b=>{
+      b.alter += dt;
+      if(b.alter > b.dauer) return false;
+      const p = b.alter / b.dauer;
+      let a = Math.pow(1-p, 1.7);
+      if(p < .16) a *= .35 + Math.random()*.65;   /* Flackern der Entladung */
+      else if(p < .3) a *= .5;
+      a *= b.staerke;
+      if(a <= .012) return true;
+      ctx.globalCompositeOperation = "lighter";
+      linie(b.haupt, 7, "rgba(30,138,76," + (a*.16) + ")", 34);
+      linie(b.haupt, 2.4, "rgba(139,224,75," + (a*.6) + ")", 20);
+      linie(b.haupt, .9, "rgba(240,255,225," + (a*.92) + ")", 10);
+      b.aeste.forEach(ast=>{
+        linie(ast, 1.6, "rgba(139,224,75," + (a*.34) + ")", 14);
+        linie(ast, .6, "rgba(230,255,215," + (a*.5) + ")", 7);
+      });
+      ctx.globalCompositeOperation = "source-over";
+      return true;
+    });
+  }
+
+  let letzte = performance.now(), naechster = 1100;
+  function schleife(jetzt){
+    const dt = Math.min(jetzt - letzte, 60); letzte = jetzt;
+    if(sichtbar){
+      ctx.clearRect(0,0,B,H);
+      leitungenZeichnen(jetzt, dt);
+      naechster -= dt;
+      if(naechster <= 0){
+        blitzErzeugen();
+        if(Math.random() > .72) setTimeout(blitzErzeugen, 90 + Math.random()*160);
+        naechster = 2200 + Math.random()*3600;
+      }
+      blitzeZeichnen(dt);
+    }
+    requestAnimationFrame(schleife);
+  }
+
+  messen();
+  let bremse;
+  window.addEventListener("resize", ()=>{ clearTimeout(bremse); bremse = setTimeout(messen, 180); });
+  document.addEventListener("visibilitychange", ()=>{ sichtbar = !document.hidden; letzte = performance.now(); });
+  new IntersectionObserver(e=>{ sichtbar = e[0].isIntersecting && !document.hidden; letzte = performance.now(); }).observe(held);
+  requestAnimationFrame(schleife);
+})();
+
+/* ════════ Lichtschein folgt dem Zeiger ════════ */
+(function(){
+  const held = document.getElementById("held"), schein = document.getElementById("schein");
+  if(!held || sanft) return;
+  held.addEventListener("pointermove", e=>{
+    const r = held.getBoundingClientRect();
+    schein.style.setProperty("--mx", ((e.clientX - r.left)/r.width*100) + "%");
+    schein.style.setProperty("--my", ((e.clientY - r.top)/r.height*100) + "%");
+  });
+})();
+
+/* ════════ Zählwerk ════════ */
+(function(){
+  const ziel = "0347", runden = 2;
+  const box = document.getElementById("zaehlwerk");
+  if(!box) return;
+
+  ziel.split("").forEach((z,i)=>{
+    const wert = parseInt(z,10);
+    const stelle = document.createElement("div");
+    stelle.className = "stelle" + (i === ziel.length-1 ? " rot" : "");
+    const band = document.createElement("div");
+    band.className = "band";
+
+    /* Ziffernfolge: volle Umdrehungen, dann die Zielziffer als letztes Feld */
+    const folge = [];
+    if(!sanft) for(let r=0;r<runden;r++) for(let n=0;n<10;n++) folge.push(n);
+    folge.push(wert);
+    folge.forEach(n=>{
+      const feld = document.createElement("span");
+      feld.textContent = n;
+      band.appendChild(feld);
+    });
+
+    stelle.appendChild(band);
+    box.appendChild(stelle);
+
+    /* Ein Feld ist genau so hoch wie das Fenster → Schritt = 100 % */
+    if(!sanft){
+      band.style.transitionDelay = (.5 + i*.15) + "s";
+      requestAnimationFrame(()=>requestAnimationFrame(()=>{
+        band.style.transform = "translateY(-" + ((folge.length - 1) * 100) + "%)";
+      }));
+    }
+  });
+})();
+
+/* ════════ Kopfleiste ════════ */
+(function(){
+  const kopf = document.getElementById("kopfleiste"), held = document.getElementById("held");
+  function pruefen(){ kopf.classList.toggle("fest", window.scrollY > held.offsetHeight - 90); }
+  pruefen(); window.addEventListener("scroll", pruefen, {passive:true});
+})();
+
+/* ════════ Formular ════════ */
+(function(){
+  const form = document.getElementById("anfrage"), erfolg = document.getElementById("erfolg");
+  const regeln = {
+    "f-zaehler":  () => /^[A-Za-z0-9]{8,14}$/.test(document.getElementById("zaehlernummer").value.trim()),
+    "f-plz":      () => /^\d{5}$/.test(document.getElementById("plz").value.trim()),
+    "f-verbrauch":() => { const v = +document.getElementById("verbrauch").value; return v >= 300 && v <= 50000; },
+    "f-vorname":  () => document.getElementById("vorname").value.trim().length > 1,
+    "f-nachname": () => document.getElementById("nachname").value.trim().length > 1,
+    "f-mail":     () => /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/.test(document.getElementById("mail").value.trim()),
+    "f-ok":       () => document.getElementById("einwilligung").checked
+  };
+  function pruefe(id){
+    const feld = document.getElementById(id), gut = regeln[id]();
+    feld.classList.toggle("ungueltig", !gut); return gut;
+  }
+  Object.keys(regeln).forEach(id=>{
+    const feld = document.getElementById(id);
+    ["input","change"].forEach(ev => feld.addEventListener(ev, ()=>{ if(feld.classList.contains("ungueltig")) pruefe(id); }));
+  });
+  form.addEventListener("submit", e=>{
+    e.preventDefault();
+    let ok = true, erstes = null;
+    Object.keys(regeln).forEach(id=>{ if(!pruefe(id)){ ok = false; erstes = erstes || document.getElementById(id); } });
+    if(!ok){
+      erstes.scrollIntoView({block:"center", behavior: sanft ? "auto" : "smooth"});
+      const f = erstes.querySelector("input,select"); if(f) f.focus({preventScroll:true});
+      return;
+    }
+    /* Hier später an den eigenen Server / das CRM senden:
+       fetch("/api/anfrage",{method:"POST",headers:{"Content-Type":"application/json"},
+         body:JSON.stringify(Object.fromEntries(new FormData(form)))}) */
+    const daten = Object.fromEntries(new FormData(form));
+    console.log("Anfrage:", daten);
+    document.getElementById("ziel-mail").textContent = daten.mail;
+    document.getElementById("vorgang").textContent = "WG-" + new Date().getFullYear() + "-" + Math.floor(100000 + Math.random()*899999);
+    form.style.display = "none";
+    erfolg.classList.add("an");
+    erfolg.scrollIntoView({block:"center", behavior: sanft ? "auto" : "smooth"});
+  });
+})();
+
+/* ════════ Rechtstexte als Fenster ════════ */
+(function(){
+  let letzterFokus = null;
+
+  function auf(name){
+    const m = document.getElementById("modal-" + name);
+    if(!m) return;
+    const offen = document.querySelector(".modal:not([hidden])");
+    if(offen === m) return;
+    if(offen) offen.hidden = true;            /* Wechsel zwischen den Rechtstexten */
+    else letzterFokus = document.activeElement;
+    m.hidden = false;
+    document.body.style.overflow = "hidden";
+    const zu = m.querySelector(".modal-zu");
+    if(zu) zu.focus();
+  }
+  function schliessen(m){
+    if(!m || m.hidden) return;
+    m.hidden = true;
+    document.body.style.overflow = "";
+    if(letzterFokus && letzterFokus.focus) letzterFokus.focus();
+  }
+
+  document.addEventListener("click", e=>{
+    const oeffner = e.target.closest("[data-modal]");
+    if(oeffner){ e.preventDefault(); auf(oeffner.dataset.modal); return; }
+    const knopf = e.target.closest("[data-schliessen]");
+    if(knopf){ e.preventDefault(); schliessen(knopf.closest(".modal")); }
+  });
+
+  document.addEventListener("keydown", e=>{
+    const offen = document.querySelector(".modal:not([hidden])");
+    if(!offen) return;
+    if(e.key === "Escape"){ schliessen(offen); return; }
+    if(e.key !== "Tab") return;
+    /* Fokus im Fenster halten */
+    const ziele = offen.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+    if(!ziele.length) return;
+    const erst = ziele[0], letzt = ziele[ziele.length-1];
+    if(e.shiftKey && document.activeElement === erst){ e.preventDefault(); letzt.focus(); }
+    else if(!e.shiftKey && document.activeElement === letzt){ e.preventDefault(); erst.focus(); }
+  });
+})();
+
+/* ════════ Einblenden beim Scrollen ════════ */
+(function(){
+  const b = new IntersectionObserver(es=>{
+    es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("da"); b.unobserve(e.target); } });
+  }, {threshold:.12});
+  document.querySelectorAll(".reveal").forEach(el => b.observe(el));
+})();
+</script>
+</body>
+</html>
