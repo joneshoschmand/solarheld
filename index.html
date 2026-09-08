@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='9' fill='%2303170F'/%3E%3Ccircle cx='20' cy='20' r='16.6' fill='none' stroke='%238BE04B' stroke-width='2.6' stroke-linecap='round' stroke-dasharray='41 11.15' opacity='.5' transform='rotate(-62 20 20)'/%3E%3Cpath d='M23.4 7.9 12 21.7h5.9l-1.3 10.4 11.4-14h-6.1z' fill='%238BE04B'/%3E%3C/svg%3E">
 <title>Wattgrün — Ökostrom zum ehrlichen Preis</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -26,7 +27,7 @@
   --mono:"Inter",system-ui,-apple-system,sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-.marke,.eyebrow,legend,.schritt .nr,.zaehler-kopf span,.einheit,.fuss-grid h4,.quittung,.stelle,input.zaehlerfeld,.zahl b{font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1}
+.marke,.eyebrow,legend,.schritt .nr,.zaehler-kopf span,.einheit,.fuss-grid h4,.quittung,.stelle,.zahl b{font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1}
 html{scroll-behavior:smooth;background:#FFFFFF}
 body{font-family:var(--body);color:var(--kohle);background:#FFFFFF;font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 .wrap{width:min(1180px,100% - 4.5rem);margin-inline:auto;
@@ -41,8 +42,15 @@ header.fest{background:rgba(255,255,255,.9);backdrop-filter:blur(16px) saturate(
 .kopf{display:flex;align-items:center;justify-content:space-between;padding:1.05rem 0}
 .logo{display:flex;align-items:center;gap:.62rem;font-family:var(--display);font-weight:800;font-size:1.28rem;letter-spacing:-.03em;color:var(--weiss);text-decoration:none;transition:color .45s ease}
 header.fest .logo{color:var(--tief)}
-.logo .bolt{width:28px;height:28px;border-radius:8px;background:var(--signal);display:grid;place-items:center;color:var(--nacht);font-size:15px;box-shadow:0 0 22px rgba(139,224,75,.55);transition:box-shadow .45s ease,background .45s ease,color .45s ease}
-header.fest .logo .bolt{background:var(--tief);color:var(--signal);box-shadow:none}
+.logo .marke-zeichen{width:34px;height:34px;flex:0 0 34px;overflow:visible}
+.logo .ring{fill:none;stroke:var(--signal);stroke-width:2.6;stroke-linecap:round;opacity:.5;transform-box:view-box;transform-origin:20px 20px;transform:rotate(-62deg);transition:stroke .45s ease,opacity .45s ease,transform .9s cubic-bezier(.22,1,.36,1)}
+.logo .funke{fill:var(--signal);transform-box:view-box;transform-origin:20px 20px;transform:scale(1.12);filter:drop-shadow(0 0 9px rgba(139,224,75,.6));transition:fill .45s ease,filter .45s ease}
+.logo:hover .ring{transform:rotate(118deg);opacity:.85}
+.logo .wortmarke{white-space:nowrap}
+.logo em{font-style:normal;color:var(--signal);transition:color .45s ease}
+header.fest .logo .ring{stroke:var(--gras);opacity:.78}
+header.fest .logo .funke{fill:var(--tief);filter:none}
+header.fest .logo em{color:var(--gras)}
 nav{display:flex;gap:1.7rem;align-items:center}
 nav a:not(.knopf){color:rgba(255,255,255,.72);text-decoration:none;font-size:.93rem;font-weight:500;transition:color .45s ease}
 nav a:not(.knopf):hover{color:var(--signal)}
@@ -155,8 +163,6 @@ label{display:block;font-size:.88rem;font-weight:600;color:var(--tief);margin-bo
 label .opt{font-weight:400;color:#7a8f86}
 input,select{width:100%;padding:.85rem .98rem;border:1.5px solid var(--linie);border-radius:11px;font-family:var(--body);font-size:1rem;background:var(--weiss);color:var(--kohle);transition:border-color .18s ease,box-shadow .18s ease}
 input:focus,select:focus{outline:none;border-color:var(--gras);box-shadow:0 0 0 4px rgba(30,138,76,.13)}
-input.zaehlerfeld{font-family:var(--mono);font-weight:700;letter-spacing:.18em;font-size:1.05rem;background:linear-gradient(180deg,#fbfbf6,#f2f2e9);border-color:var(--tief);text-transform:uppercase}
-input.zaehlerfeld:focus{box-shadow:0 0 0 4px rgba(139,224,75,.32)}
 .hilfe{font-size:.79rem;color:#6c8279;margin-top:.35rem}
 .fehler{display:none;font-size:.82rem;color:var(--rot);margin-top:.35rem;font-weight:500}
 .feld.ungueltig input,.feld.ungueltig select{border-color:var(--rot)}
@@ -246,7 +252,6 @@ footer .logo{color:var(--weiss)}
   .zahl span{color:#5b7169!important}
   .eyebrow,legend,.schritt .nr{color:var(--gras)!important}
   input,select{background:#FFFFFF!important;color:var(--kohle)!important;-webkit-text-fill-color:var(--kohle)}
-  input.zaehlerfeld{background:#F7F7F2!important}
   .quittung{background:var(--nebel)!important;color:var(--tief)!important}
   .held,.held-grund{background-color:var(--nacht)!important}
   .inhaber-block{background:var(--nebel)!important}
@@ -271,7 +276,11 @@ footer .logo{color:var(--weiss)}
 
 <header id="kopfleiste">
   <div class="wrap kopf">
-    <a href="#" class="logo"><span class="bolt">⚡</span>Wattgrün</a>
+    <a href="#" class="logo" aria-label="Wattgrün, zur Startseite">
+      <svg class="marke-zeichen" viewBox="0 0 40 40" aria-hidden="true" focusable="false">
+        <circle class="ring" cx="20" cy="20" r="16.6" fill="none" stroke-dasharray="41 11.15"/>
+        <path class="funke" d="M23.4 7.9 12 21.7h5.9l-1.3 10.4 11.4-14h-6.1z"/>
+      </svg><span class="wortmarke">Watt<em>grün</em></span></a>
     <nav>
       <a href="#ablauf">So läuft der Wechsel</a>
       <a href="#inhaber">Über uns</a>
@@ -296,7 +305,7 @@ footer .logo{color:var(--weiss)}
         <span class="zeile"><span>Die Frage ist nur,</span></span>
         <span class="zeile"><span><em>zu welchem Preis</em>.</span></span>
       </h1>
-      <p class="lead spaet">Sagen Sie uns Ihre Zählernummer und Ihren Verbrauch — wir rechnen Ihren Haushalt durch und melden uns mit einem festen Preis. Keine Bonusfallen, keine Bindung über die Preisgarantie hinaus.</p>
+      <p class="lead spaet">Sagen Sie uns Ihre Postleitzahl und Ihren Verbrauch — wir rechnen Ihren Haushalt durch und melden uns mit einem festen Preis. Keine Bonusfallen, keine Bindung über die Preisgarantie hinaus.</p>
       <ul class="merkmale spaet b">
         <li><span class="haken">✓</span><span>Preisgarantie für 24 Monate, schriftlich im Angebot</span></li>
         <li><span class="haken">✓</span><span>Wir kündigen bei Ihrem alten Anbieter — Sie unterschreiben einmal</span></li>
@@ -339,7 +348,7 @@ footer .logo{color:var(--weiss)}
       <div class="schritt">
         <div class="nr">01</div>
         <h3>Daten hinterlassen</h3>
-        <p>Zählernummer, Postleitzahl, ungefährer Jahresverbrauch. Die Zählernummer steht auf Ihrem Zähler und auf jeder Jahresabrechnung.</p>
+        <p>Postleitzahl, ungefährer Jahresverbrauch, Kontaktdaten. Mehr brauchen wir nicht — den Rest klären wir, sobald das Angebot steht.</p>
       </div>
       <div class="schritt">
         <div class="nr">02</div>
@@ -395,8 +404,8 @@ footer .logo{color:var(--weiss)}
       <h2>Angebot anfordern</h2>
       <p>Ausfüllen dauert etwa eine Minute. Es entsteht kein Vertrag und keine Verpflichtung — Sie erhalten zunächst nur eine Berechnung.</p>
       <div class="hinweis">
-        <b>Wo steht die Zählernummer?</b>
-        Auf dem Typenschild Ihres Stromzählers, meist unter dem Strichcode, und oben auf Ihrer letzten Jahresabrechnung. Sie ist 8 bis 14 Zeichen lang. Nicht zu verwechseln mit dem Zählerstand.
+        <b>Wo steht Ihr Jahresverbrauch?</b>
+        Auf Ihrer letzten Jahresabrechnung, meist ganz oben neben dem Abrechnungszeitraum, angegeben in Kilowattstunden (kWh). Eine grobe Schätzung genügt uns fürs Erste — wir rechnen später mit dem genauen Wert.
       </div>
       <div class="hinweis">
         <b>Was wir nicht brauchen</b>
@@ -407,13 +416,7 @@ footer .logo{color:var(--weiss)}
     <div class="karte reveal">
       <form id="anfrage" novalidate>
         <fieldset>
-          <legend>Ihr Anschluss</legend>
-          <div class="feld" id="f-zaehler">
-            <label for="zaehlernummer">Zählernummer</label>
-            <input class="zaehlerfeld" type="text" id="zaehlernummer" name="zaehlernummer" placeholder="1ESY1161234567" autocomplete="off" spellcheck="false" required>
-            <div class="hilfe">8–14 Zeichen, Buchstaben und Ziffern</div>
-            <div class="fehler">Bitte die Zählernummer eintragen — 8 bis 14 Buchstaben oder Ziffern.</div>
-          </div>
+          <legend>Ihr Verbrauch</legend>
           <div class="reihe">
             <div class="feld" id="f-plz">
               <label for="plz">Postleitzahl</label>
@@ -423,6 +426,7 @@ footer .logo{color:var(--weiss)}
             <div class="feld" id="f-verbrauch">
               <label for="verbrauch">Jahresverbrauch <span class="opt">in kWh</span></label>
               <input type="number" id="verbrauch" name="verbrauch" placeholder="3200" min="300" max="50000" required>
+              <div class="hilfe">Steht auf Ihrer letzten Jahresabrechnung</div>
               <div class="fehler">Bitte einen Wert zwischen 300 und 50.000 eintragen.</div>
             </div>
           </div>
@@ -487,7 +491,11 @@ footer .logo{color:var(--weiss)}
   <div class="wrap">
     <div class="fuss-grid">
       <div>
-        <a href="#" class="logo"><span class="bolt">⚡</span>Wattgrün</a>
+        <a href="#" class="logo" aria-label="Wattgrün, zur Startseite">
+      <svg class="marke-zeichen" viewBox="0 0 40 40" aria-hidden="true" focusable="false">
+        <circle class="ring" cx="20" cy="20" r="16.6" fill="none" stroke-dasharray="41 11.15"/>
+        <path class="funke" d="M23.4 7.9 12 21.7h5.9l-1.3 10.4 11.4-14h-6.1z"/>
+      </svg><span class="wortmarke">Watt<em>grün</em></span></a>
         <p>Ökostrom aus deutschen Wasser- und Windkraftanlagen. Beliefert Haushalte in ganz Deutschland.</p>
       </div>
       <div>
@@ -823,7 +831,6 @@ const sanft = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 (function(){
   const form = document.getElementById("anfrage"), erfolg = document.getElementById("erfolg");
   const regeln = {
-    "f-zaehler":  () => /^[A-Za-z0-9]{8,14}$/.test(document.getElementById("zaehlernummer").value.trim()),
     "f-plz":      () => /^\d{5}$/.test(document.getElementById("plz").value.trim()),
     "f-verbrauch":() => { const v = +document.getElementById("verbrauch").value; return v >= 300 && v <= 50000; },
     "f-vorname":  () => document.getElementById("vorname").value.trim().length > 1,
